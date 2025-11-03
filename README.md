@@ -12,8 +12,8 @@
 
 | Documento | Tipo | Evidencia |
 |-----------|------|---------|
-| Ejercicios practicos de Listas | Códigos | [Ver Códigos]() |
-| Ejercicios practicos de Pilas | Códigos | [Ver Códigos]() |
+| Ejercicios practicos de Listas | Códigos | [Ver Códigos](https://github.com/ValeriaGaona/U2GB-Ejercicios-Practicos/blob/main/README.md#ejercicios-practicos-de-listas) |
+| Ejercicios practicos de Pilas | Códigos | [Ver Códigos](https://github.com/ValeriaGaona/U2GB-Ejercicios-Practicos/blob/main/README.md#ejercicios-practicos-de-pilas) |
 | Ejercicios practicos de Colas | Códigos | [Ver Códigos]() |
 
 
@@ -363,7 +363,7 @@ public class ListaCaracteres {
 ```
 
 
-# Ejercicios practicos de
+# Ejercicios practicos de Colas
 
 ### Ejercicio 1: 
 ```
