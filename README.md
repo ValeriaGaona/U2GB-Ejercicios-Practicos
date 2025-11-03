@@ -11,7 +11,7 @@
 #  Tabla de Contenidos
 
 | Documento | Tipo | Evidencia |
-|-----------|------|-------------|---------|
+|-----------|------|---------|
 | Ejercicios practicos de Listas | Códigos | [Ver Códigos]() |
 | Ejercicios practicos de Pilas | Códigos | [Ver Códigos]() |
 | Ejercicios practicos de Colas | Códigos | [Ver Códigos]() |
