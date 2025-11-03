@@ -365,27 +365,17 @@ public class ListaCaracteres {
 
 # Ejercicios practicos de Colas
 
-### Ejercicio 1: 
+### Ejercicio 1: Comparación de Colas
 ```
 
 ```
 
-### Ejercicio 2: 
+### Ejercicio 2: Simulación de supermercado con carritos y cajas
 ```
 
 ```
 
-### Ejercicio 3: 
-```
-
-```
-
-### Ejercicio 4: 
-```
-
-```
-
-### Ejercicio 5: 
+### Ejercicio 3: Simulación de atención al cliente en supermercado 
 ```
 
 ```
