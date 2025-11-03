@@ -1,5 +1,23 @@
+ <img width="919" height="183" alt="image" src="https://github.com/user-attachments/assets/0632f3c5-507a-4b74-aec0-3bab4368ceb5" />
+
+### Universidad Tecnológica del Norte de Guanajuato
+
+### Ingeniería en Tecnologías de la Información e Innovación Digital: Especialización en Desarrollo de Software y Multiplataforma
+
+## Valeria García Gaona (1224100671) - GTID141
+
 # U2GB-Ejercicios-Practicos
-## Codigos de ejercicios
+
+#  Tabla de Contenidos
+
+| Documento | Tipo | Evidencia |
+|-----------|------|-------------|---------|
+| Ejercicios practicos de Listas | Códigos | [Ver Códigos]() |
+| Ejercicios practicos de Pilas | Códigos | [Ver Códigos]() |
+| Ejercicios practicos de Colas | Códigos | [Ver Códigos]() |
+
+
+# Ejercicios practicos de Listas
 
 ### Ejercicio 1: Manipulación de Lista Enlazada
 ```
@@ -314,4 +332,60 @@ public class ListaCaracteres {
         scanner.close();
     }
 }
+```
+
+
+# Ejercicios practicos de Pilas
+
+### Ejercicio 1: 
+```
+
+```
+
+### Ejercicio 2: 
+```
+
+```
+
+### Ejercicio 3: 
+```
+
+```
+
+### Ejercicio 4: 
+```
+
+```
+
+### Ejercicio 5: 
+```
+
+```
+
+
+# Ejercicios practicos de
+
+### Ejercicio 1: 
+```
+
+```
+
+### Ejercicio 2: 
+```
+
+```
+
+### Ejercicio 3: 
+```
+
+```
+
+### Ejercicio 4: 
+```
+
+```
+
+### Ejercicio 5: 
+```
+
 ```
