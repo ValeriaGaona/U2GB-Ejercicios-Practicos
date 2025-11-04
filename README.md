@@ -526,7 +526,38 @@ public class ListaCaracteres {
 
 ### Ejercicio 2: 
 ```
+package pilas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.*;
 
+/**
+ * Permite ingresar nombres y mostrarlos en orden inverso.
+ */
+public class NombreInversor {
+
+    public static void mostrarNombresInvertidos() {
+        Scanner sc = new Scanner(System.in);
+        Stack<String> pila = new Stack<>();
+        String nombre;
+        while (true) {
+            System.out.print("Ingrese un nombre (FIN para salir): ");
+            nombre = sc.nextLine();
+            if (nombre.equalsIgnoreCase("FIN")) break;
+            pila.push(nombre);
+        }
+        System.out.println("Nombres en orden inverso:");
+        while (!pila.isEmpty()) {
+            System.out.println(pila.pop());
+        }
+    }
+
+    public static void main(String[] args) {
+        mostrarNombresInvertidos();
+    }
+}
 ```
 
 ### Ejercicio 3: 
@@ -554,10 +585,149 @@ public class ListaCaracteres {
 
 ### Ejercicio 2: Simulación de supermercado con carritos y cajas
 ```
+package colas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.*;
 
+/**
+ * Simula el flujo de clientes en un supermercado con carritos y cajas.
+ */
+public class Supermercado {
+
+    private final Queue<Integer> carritos = new LinkedList<>();
+    private final List<Queue<Cliente>> cajas = new ArrayList<>();
+
+    public Supermercado(int totalCarritos, int totalCajas) {
+        for (int i = 0; i < totalCarritos; i++) carritos.add(i);
+        for (int i = 0; i < totalCajas; i++) cajas.add(new LinkedList<>());
+    }
+
+    /**
+     * Ingresa un cliente al sistema.
+     */
+    public void ingresarCliente(Cliente cliente) {
+        if (carritos.isEmpty()) {
+            System.out.println(cliente.getNombre() + " espera por carrito...");
+            return;
+        }
+        cliente.setCarrito(carritos.poll());
+        Queue<Cliente> cajaMenor = cajas.stream().min(Comparator.comparingInt(Queue::size)).orElse(cajas.get(0));
+        cajaMenor.add(cliente);
+        System.out.println(cliente.getNombre() + " se colocó en la caja con menos clientes.");
+    }
+
+    /**
+     * Procesa el pago de los clientes en cada caja.
+     */
+    public void procesarPago() {
+        for (Queue<Cliente> caja : cajas) {
+            if (!caja.isEmpty()) {
+                Cliente cliente = caja.poll();
+                carritos.add(cliente.getCarrito());
+                System.out.println(cliente.getNombre() + " pagó y liberó carrito " + cliente.getCarrito());
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Supermercado sim = new Supermercado(25, 3);
+        for (int i = 0; i < 30; i++) sim.ingresarCliente(new Cliente("Cliente" + i));
+        sim.procesarPago();
+    }
+}
+```
+```
+package colas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+/**
+ * Representa un cliente en el supermercado.
+ */
+public class Cliente {
+    private final String nombre;
+    private int carrito;
+
+    public Cliente(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCarrito(int carrito) {
+        this.carrito = carrito;
+    }
+
+    public int getCarrito() {
+        return carrito;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+}
 ```
 
 ### Ejercicio 3: Simulación de atención al cliente en supermercado 
 ```
+package colas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.*;
 
+/**
+ * Simula atención al cliente en supermercado durante 7 horas.
+ */
+public class SimuladorAtencion {
+
+    private final Queue<Cliente> fila = new LinkedList<>();
+    private final List<Queue<Cliente>> cajas = new ArrayList<>();
+    private final int tiempoSimulacion = 7 * 60; // 7 horas en minutos
+    private int clientesAtendidos = 0;
+    private int maxFila = 0;
+    private int sumaTamañosFila = 0;
+    private int tiempoAperturaCajaExtra = -1;
+
+    public SimuladorAtencion() {
+        for (int i = 0; i < 3; i++) cajas.add(new LinkedList<>());
+    }
+
+    public void simular() {
+        for (int minuto = 0; minuto < tiempoSimulacion; minuto++) {
+            fila.add(new Cliente("Cliente" + minuto));
+            if (fila.size() > 20 && cajas.size() == 3) {
+                cajas.add(new LinkedList<>());
+                tiempoAperturaCajaExtra = minuto;
+            }
+
+            sumaTamañosFila += fila.size();
+            maxFila = Math.max(maxFila, fila.size());
+
+            for (Queue<Cliente> caja : cajas) {
+                if (!fila.isEmpty()) {
+                    caja.add(fila.poll());
+                    clientesAtendidos++;
+                }
+            }
+        }
+
+        mostrarEstadisticas();
+    }
+
+    private void mostrarEstadisticas() {
+        System.out.println("Total clientes atendidos: " + clientesAtendidos);
+        System.out.println("Tamaño medio de la fila: " + (sumaTamañosFila / tiempoSimulacion));
+        System.out.println("Tamaño máximo de la fila: " + maxFila);
+        System.out.println("Minuto de apertura de la cuarta caja: " +
+                (tiempoAperturaCajaExtra >= 0 ? tiempoAperturaCajaExtra : "No se abrió"));
+    }
+
+    public static void main(String[] args) {
+        new SimuladorAtencion().simular();
+    }
+}
 ```
