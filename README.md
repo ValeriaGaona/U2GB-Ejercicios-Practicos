@@ -651,9 +651,31 @@ public class BalanceadorParentesis {
 }
 ```
 
-### Ejercicio 5: 
+### Ejercicio 5: Verifica si una pila está 
 ```
+package pilas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.Stack;
 
+/**
+ * Verifica si esta vacía antes y después de insertar elementos.
+ */
+public class VerificadorVacio {
+
+    public static void ejecutar() {
+        Stack<Integer> pila = new Stack<>();
+        System.out.println("¿Está vacía la pila? " + pila.isEmpty());
+        pila.push(1);
+        System.out.println("¿Está vacía la pila? " + pila.isEmpty());
+    }
+
+    public static void main(String[] args) {
+        ejecutar();
+    }
+}
 ```
 
 
