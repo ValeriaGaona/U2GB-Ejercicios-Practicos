@@ -517,14 +517,39 @@ public class ListaCaracteres {
 ```
 
 
-# Ejercicios practicos de Pilas
+# Ejercicios practicos de Pilas 
 
-### Ejercicio 1: 
+### Ejercicio 1: Invertir palabra
+```
+package pilas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.*;
+
+/**
+ * Invierte una palabra usando una pila de caracteres.
+ */
+public class InversorPalabra {
+
+    public static void ejecutar() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese una palabra: ");
+        String palabra = sc.nextLine();
+        Stack<Character> pila = new Stack<>();
+        for (char c : palabra.toCharArray()) pila.push(c);
+        System.out.print("Invertida: ");
+        while (!pila.isEmpty()) System.out.print(pila.pop());
+    }
+
+    public static void main(String[] args) {
+        ejecutar();
+    }
+}
 ```
 
-```
-
-### Ejercicio 2: 
+### Ejercicio 2: Pila de nombres
 ```
 package pilas;
 /**
@@ -560,14 +585,70 @@ public class NombreInversor {
 }
 ```
 
-### Ejercicio 3: 
+### Ejercicio 3: Decimal a binario
+```
+package pilas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.*;
+
+/**
+ * Convierte un número decimal a binario usando pila.
+ */
+public class ConversorBinario {
+
+    public static void ejecutar() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese número: ");
+        int num = sc.nextInt();
+        Stack<Integer> pila = new Stack<>();
+        while (num > 0) {
+            pila.push(num % 2);
+            num /= 2;
+        }
+        System.out.print("Binario: ");
+        while (!pila.isEmpty()) System.out.print(pila.pop());
+    }
+
+    public static void main(String[] args) {
+        ejecutar();
+    }
+}
 ```
 
+### Ejercicio 4: Balanceo de paréntesis
 ```
+package pilas;
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.Stack;
 
-### Ejercicio 4: 
-```
+/**
+ * Verifica si los paréntesis de una expresión están balanceados.
+ */
+public class BalanceadorParentesis {
 
+    public static boolean estaBalanceada(String expr) {
+        Stack<Character> pila = new Stack<>();
+        for (char c : expr.toCharArray()) {
+            if (c == '(') pila.push(c);
+            else if (c == ')') {
+                if (pila.isEmpty()) return false;
+                pila.pop();
+            }
+        }
+        return pila.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(estaBalanceada("((2+3)*5)")); // true
+        System.out.println(estaBalanceada("((2+3)*5"));  // false
+    }
+}
 ```
 
 ### Ejercicio 5: 
@@ -580,7 +661,40 @@ public class NombreInversor {
 
 ### Ejercicio 1: Comparación de Colas
 ```
+package colas;
 
+import java.util.*;
+
+/**
+ *  Ejercicios practicos.
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ */
+public class ColaComparador {
+
+    /**
+     * Compara si dos colas son idénticas en tamaño y orden
+     * cola1 primera cola
+     * cola2 segunda cola
+     * ¿ true si son iguales y false si no
+     */
+    public static <T> boolean sonIdenticas(Queue<T> cola1, Queue<T> cola2) {
+        if (cola1.size() != cola2.size()) return false;
+
+        Iterator<T> it1 = cola1.iterator();
+        Iterator<T> it2 = cola2.iterator();
+
+        while (it1.hasNext()) {
+            if (!Objects.equals(it1.next(), it2.next())) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Queue<Integer> a = new LinkedList<>(List.of(1, 2, 3));
+        Queue<Integer> b = new LinkedList<>(List.of(1, 2, 3));
+        System.out.println("¿Son idénticas? " + sonIdenticas(a, b)); // true
+    }
+}
 ```
 
 ### Ejercicio 2: Simulación de supermercado con carritos y cajas
