@@ -110,7 +110,189 @@ public class ListaNumeros {
 
 ### Ejercicio 2: Lista Enlazada de Palabras desde Archivo
 ```
+package leerPalabras;
 
+/**
+ *  Ejercicios practicos. Ejercicio 2: Lista Enlazada de Palabras desde Archivo
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 03/11/25 - 1224100671.vgg@gmail.com
+ */
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * Implementación genérica de una lista.
+ */
+public class lista<T> {
+    private Nodo<T> cabeza; //primer nodo
+
+    
+    private static class Nodo<T> { //esta clase representa al primer nodo
+        T dato;
+        Nodo<T> siguiente;
+
+        Nodo(T dato) {
+            this.dato = dato;
+            this.siguiente = null;
+        }
+    }
+
+    public Nodo<T> getCabeza() {
+        return cabeza;
+    }
+
+    public void setCabeza(Nodo<T> cabeza) {
+        this.cabeza = cabeza;
+    }
+    
+    public void insertarAlFinal(T dato) {// Inserta un elemento al final
+        Nodo<T> nuevo = new Nodo<>(dato);
+        if (cabeza == null) {
+            cabeza = nuevo;
+        } else {
+            Nodo<T> actual = cabeza;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nuevo;
+        }
+    }
+    
+    public boolean eliminar(T dato) {// Elimina el primer nodo que contiene el dato ingresado
+        if (cabeza == null) return false;
+
+        if (cabeza.dato.equals(dato)) {
+            cabeza = cabeza.siguiente;
+            return true;
+        }
+
+        Nodo<T> actual = cabeza;
+        while (actual.siguiente != null && !actual.siguiente.dato.equals(dato)) {
+            actual = actual.siguiente;
+        }
+
+        if (actual.siguiente != null) {
+            actual.siguiente = actual.siguiente.siguiente;
+            return true;
+        }
+
+        return false;
+    }
+    
+    public void mostrarLista() {// Muestra todos los elemnr¿tos de la lista
+        Nodo<T> actual = cabeza;
+        System.out.println("\n--- Palabras en la lista ---");
+        while (actual != null) {
+            System.out.println(actual.dato);
+            actual = actual.siguiente;
+        }
+    }
+
+    // Convertir a lista (para guardar en archivo)
+    public List<T> toList() {
+        List<T> lista = new ArrayList<>();
+        Nodo<T> actual = cabeza;
+        while (actual != null) {
+            lista.add(actual.dato);
+            actual = actual.siguiente;
+        }
+        return lista;
+    }
+}
+```
+```
+package leerPalabras;
+import java.io.*;
+import java.util.List;
+
+/**
+ *  Ejercicios practicos. Ejercicio 2: Lista Enlazada de Palabras desde Archivo
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 03/11/25 - 1224100671.vgg@gmail.com
+ */
+public class archivo<T> {
+
+    /**
+     * Guarda los elementos de una lista enlazada en un archivo de texto.
+     * Cada elemento se escribe en una línea separada.
+     */
+
+    public void guardarEnArchivo(lista<T> lista, String name) {
+        List<T> elementos = lista.toList();
+        try (PrintWriter writer = new PrintWriter(new FileWriter(name))) {
+            for (T elem : elementos) {
+                writer.println(elem); //escribe cada apalabra en una linea
+            }
+            System.out.println("Datos guardados en: " + name);
+        } catch (IOException e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Lee el contenido de un archivo de texto y lo devuelve como una cadena.
+     * Si el archivo no existe, se informa al usuario.
+     */
+
+    public String leerArchivo(String nombreArchivo) {
+        StringBuilder contenido = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                contenido.append(linea).append("\n");
+            }
+            System.out.println("Se enconntro el archivo.");
+        } catch (IOException e) {
+            System.out.println("No se encontro el archivo.");
+        }
+        return contenido.toString();
+    }
+}
+```
+```
+package leerPalabras;
+import java.io.*;
+import java.util.List;
+
+/**
+ *  Ejercicios practicos. Ejercicio 2: Lista Enlazada de Palabras desde Archivo
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 03/11/25 - 1224100671.vgg@gmail.com
+ */
+public class archivo<T> {
+
+    /**
+     * Guarda los elementos de una lista enlazada en un archivo de texto.
+     * Cada elemento se escribe en una línea separada.
+     */
+
+    public void guardarEnArchivo(lista<T> lista, String name) {
+        List<T> elementos = lista.toList();
+        try (PrintWriter writer = new PrintWriter(new FileWriter(name))) {
+            for (T elem : elementos) {
+                writer.println(elem); //escribe cada apalabra en una linea
+            }
+            System.out.println("Datos guardados en: " + name);
+        } catch (IOException e) {
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Lee el contenido de un archivo de texto y lo devuelve como una cadena.
+     * Si el archivo no existe, se informa al usuario.
+     */
+
+    public String leerArchivo(String nombreArchivo) {
+        StringBuilder contenido = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                contenido.append(linea).append("\n");
+            }
+            System.out.println("Se enconntro el archivo.");
+        } catch (IOException e) {
+            System.out.println("No se encontro el archivo.");
+        }
+        return contenido.toString();
+    }
+}
 ```
 
 ### Ejercicio 3: Representación y Evaluación de Polinomios con Listas Enlazadas
