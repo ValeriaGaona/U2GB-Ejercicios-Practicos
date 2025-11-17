@@ -680,190 +680,334 @@ public class VerificadorVacio {
 
 
 # Ejercicios practicos de Colas
+```
+package ec;
+/**
+ * Ejercicios Colas
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
+ */
+
+class Cola<T> {
+    private class Nodo {
+        T dato;
+        Nodo sig;
+
+        Nodo(T dato) { this.dato = dato; }
+    }
+
+    private Nodo frente;
+    private Nodo fin;
+    private int tamaño;
+
+    /**
+     * Metodo para insertar un elemento al final de la cola  
+     */
+    public void encolar(T dato) {
+        Nodo nuevo = new Nodo(dato);
+        if (fin != null) fin.sig = nuevo;
+        else frente = nuevo;
+        fin = nuevo;
+        tamaño++;
+    }
+
+    /**
+     * metodo para quitar y mostrar el elemento del frente  
+     */
+    public T desencolar() {
+        if (frente == null) return null;
+        T dato = frente.dato;
+        frente = frente.sig;
+        if (frente == null) fin = null;
+        tamaño--;
+        return dato;
+    }
+
+    /**
+     * Indica si la cola esta vacia  
+     */
+    public boolean esVacia() {
+        return frente == null;
+    }
+
+    /**
+     *   Muestra el tamaño actual de la cola
+     */
+    public int tamaño() {
+        return tamaño;
+    }
+    
+    /**
+     * muestra el elemento del frente sin eliminarlo  
+     */
+    public T verFrente() {
+        return (frente != null) ? frente.dato : null;
+    }
+}
+```
 
 ### Ejercicio 1: Comparación de Colas
 ```
-package colas;
-
-import java.util.*;
-
+package ec;
 /**
- *  Ejercicios practicos.
- * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ * Ejercicio 1: Comparación de dos colas
+ * La comparación preserva el estado original de ambas colas.
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
  */
-public class ColaComparador {
+public class Comparacion {
 
     /**
-     * Compara si dos colas son idénticas en tamaño y orden
-     * cola1 primera cola
-     * cola2 segunda cola
-     * ¿ true si son iguales y false si no
+     * Compara dos colas sin modificar su contenido.
      */
-    public static <T> boolean sonIdenticas(Queue<T> cola1, Queue<T> cola2) {
-        if (cola1.size() != cola2.size()) return false;
+    public static <T> boolean compararColas(Cola<T> c1, Cola<T> c2) {
+        
+        /**
+        * Si los tamaños son distintos retorna false  
+        */
+        if (c1.tamaño() != c2.tamaño()) return false;
 
-        Iterator<T> it1 = cola1.iterator();
-        Iterator<T> it2 = cola2.iterator();
+        Cola<T> aux1 = new Cola<>();
+        Cola<T> aux2 = new Cola<>();
 
-        while (it1.hasNext()) {
-            if (!Objects.equals(it1.next(), it2.next())) return false;
+        boolean iguales = true;
+
+        /**
+        * Recorre las dos colas a la vez  
+        */
+        while (!c1.esVacia()) {
+            T d1 = c1.desencolar();
+            T d2 = c2.desencolar();
+
+            if (!d1.equals(d2)) iguales = false;
+
+            aux1.encolar(d1);
+            aux2.encolar(d2);
         }
-        return true;
+
+        // Regresar los elementos a las colas originales
+        while (!aux1.esVacia()) c1.encolar(aux1.desencolar());
+        while (!aux2.esVacia()) c2.encolar(aux2.desencolar());
+
+        return iguales;
     }
 
     public static void main(String[] args) {
-        Queue<Integer> a = new LinkedList<>(List.of(1, 2, 3));
-        Queue<Integer> b = new LinkedList<>(List.of(1, 2, 3));
-        System.out.println("¿Son idénticas? " + sonIdenticas(a, b)); // true
+        Cola<Integer> a = new Cola<>();
+        Cola<Integer> b = new Cola<>();
+
+        a.encolar(1); a.encolar(2); a.encolar(3);
+        b.encolar(1); b.encolar(2); b.encolar(3);
+
+        System.out.println("¿Son iguales?: " + compararColas(a, b));
     }
 }
+
 ```
 
 ### Ejercicio 2: Simulación de supermercado con carritos y cajas
 ```
-package colas;
+package ec;
 /**
- *  Ejercicios practicos.
- * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ * Ejercicio 2 Colas
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
  */
-import java.util.*;
-
 /**
- * Simula el flujo de clientes en un supermercado con carritos y cajas.
+* cliente y tiempo en caja  
+*/
+class Cliente {
+    int tiempoServicio;
+
+    Cliente(int servicio) { this.tiempoServicio = servicio; }
+}
+```
+```
+package ec;
+/**
+ * Ejercicio 2 Colas: Simulación de supermercado con carritos
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
  */
-public class Supermercado {
-
-    private final Queue<Integer> carritos = new LinkedList<>();
-    private final List<Queue<Cliente>> cajas = new ArrayList<>();
-
-    public Supermercado(int totalCarritos, int totalCajas) {
-        for (int i = 0; i < totalCarritos; i++) carritos.add(i);
-        for (int i = 0; i < totalCajas; i++) cajas.add(new LinkedList<>());
-    }
-
-    /**
-     * Ingresa un cliente al sistema.
-     */
-    public void ingresarCliente(Cliente cliente) {
-        if (carritos.isEmpty()) {
-            System.out.println(cliente.getNombre() + " espera por carrito...");
-            return;
-        }
-        cliente.setCarrito(carritos.poll());
-        Queue<Cliente> cajaMenor = cajas.stream().min(Comparator.comparingInt(Queue::size)).orElse(cajas.get(0));
-        cajaMenor.add(cliente);
-        System.out.println(cliente.getNombre() + " se colocó en la caja con menos clientes.");
-    }
-
-    /**
-     * Procesa el pago de los clientes en cada caja.
-     */
-    public void procesarPago() {
-        for (Queue<Cliente> caja : cajas) {
-            if (!caja.isEmpty()) {
-                Cliente cliente = caja.poll();
-                carritos.add(cliente.getCarrito());
-                System.out.println(cliente.getNombre() + " pagó y liberó carrito " + cliente.getCarrito());
-            }
-        }
-    }
+public class SimulacionCarritos {
 
     public static void main(String[] args) {
-        Supermercado sim = new Supermercado(25, 3);
-        for (int i = 0; i < 30; i++) sim.ingresarCliente(new Cliente("Cliente" + i));
-        sim.procesarPago();
+
+        /**
+        * Clientes que esperan por un carrito  
+        */
+        Cola<Cliente> esperandoCarrito = new Cola<>();
+        Cola<Cliente> caja1 = new Cola<>();
+        Cola<Cliente> caja2 = new Cola<>();
+        Cola<Cliente> caja3 = new Cola<>();
+        /**
+        * Carritos disponibles  
+        */
+        Cola<Integer> carritos = new Cola<>();
+
+        // Agregar 25 carritos
+        for (int i = 1; i <= 25; i++) carritos.encolar(i);
+
+        int minutos = 180; // 3 horas simuladas
+
+        for (int minuto = 0; minuto < minutos; minuto++) {
+
+            // Llega nuevo cliente
+            Cliente nuevo = new Cliente((int)(Math.random()*5) + 2); // tiempo 2–6 minutos
+            esperandoCarrito.encolar(nuevo);
+
+            // Asignar carritos si hay
+            if (!carritos.esVacia()) {
+                Cliente c = esperandoCarrito.desencolar();
+                carritos.desencolar(); // usa carrito
+
+                // Escoge la caja más corta
+                Cola<Cliente> destino = caja1.tamaño() <= caja2.tamaño() ?
+                        (caja1.tamaño() <= caja3.tamaño() ? caja1 : caja3)
+                        : (caja2.tamaño() <= caja3.tamaño() ? caja2 : caja3);
+
+                destino.encolar(c);
+            }
+
+            // Procesar cada caja (disminuir tiempo del cliente frontal)
+            procesarCaja(caja1, carritos);
+            procesarCaja(caja2, carritos);
+            procesarCaja(caja3, carritos);
+        }
+    }
+
+    static void procesarCaja(Cola<Cliente> caja, Cola<Integer> carritos) {
+        if (!caja.esVacia()) {
+            Cliente atendiendo = caja.desencolar();
+            atendiendo.tiempoServicio--;
+
+            if (atendiendo.tiempoServicio > 0)
+                caja.encolar(atendiendo); // regresa a la fila
+
+            else carritos.encolar(1); // libera carrito
+        }
     }
 }
+
 ```
-```
-package colas;
-/**
- *  Ejercicios practicos.
- * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
- */
-/**
- * Representa un cliente en el supermercado.
- */
-public class Cliente {
-    private final String nombre;
-    private int carrito;
 
-    public Cliente(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setCarrito(int carrito) {
-        this.carrito = carrito;
-    }
-
-    public int getCarrito() {
-        return carrito;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-}
-```
 
 ### Ejercicio 3: Simulación de atención al cliente en supermercado 
 ```
-package colas;
+package ec;
 /**
- *  Ejercicios practicos.
- * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 04/11/25 - 1224100671.vgg@gmail.com
+ * Ejercicio 3 Colas
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
  */
-import java.util.*;
+class Cliente3 {
+    int tiempoLlegada;   // en qué minuto llegó
+    int tiempoServicio;  // tiempo total que tarda su atención
 
-/**
- * Simula atención al cliente en supermercado durante 7 horas.
- */
-public class SimuladorAtencion {
-
-    private final Queue<Cliente> fila = new LinkedList<>();
-    private final List<Queue<Cliente>> cajas = new ArrayList<>();
-    private final int tiempoSimulacion = 7 * 60; // 7 horas en minutos
-    private int clientesAtendidos = 0;
-    private int maxFila = 0;
-    private int sumaTamañosFila = 0;
-    private int tiempoAperturaCajaExtra = -1;
-
-    public SimuladorAtencion() {
-        for (int i = 0; i < 3; i++) cajas.add(new LinkedList<>());
-    }
-
-    public void simular() {
-        for (int minuto = 0; minuto < tiempoSimulacion; minuto++) {
-            fila.add(new Cliente("Cliente" + minuto));
-            if (fila.size() > 20 && cajas.size() == 3) {
-                cajas.add(new LinkedList<>());
-                tiempoAperturaCajaExtra = minuto;
-            }
-
-            sumaTamañosFila += fila.size();
-            maxFila = Math.max(maxFila, fila.size());
-
-            for (Queue<Cliente> caja : cajas) {
-                if (!fila.isEmpty()) {
-                    caja.add(fila.poll());
-                    clientesAtendidos++;
-                }
-            }
-        }
-
-        mostrarEstadisticas();
-    }
-
-    private void mostrarEstadisticas() {
-        System.out.println("Total clientes atendidos: " + clientesAtendidos);
-        System.out.println("Tamaño medio de la fila: " + (sumaTamañosFila / tiempoSimulacion));
-        System.out.println("Tamaño máximo de la fila: " + maxFila);
-        System.out.println("Minuto de apertura de la cuarta caja: " +
-                (tiempoAperturaCajaExtra >= 0 ? tiempoAperturaCajaExtra : "No se abrió"));
-    }
-
-    public static void main(String[] args) {
-        new SimuladorAtencion().simular();
+    
+    Cliente3(int llegada, int servicio) {
+        tiempoLlegada = llegada;
+        tiempoServicio = servicio;
     }
 }
 ```
+```
+package ec;
+/**
+ * Ejercicio 3 Colas: Simulación de atención al cliente con 3 y 4 cajas
+ * Ejercicios Practicos U2
+ * @author Valeria García Gaona - GTID141 - 1224100671 - Fecha 16/11/25 - 1224100671.vgg@gmail.com
+ */
+public class SimulacionAtencionClientes {
+
+    public static void main(String[] args) {
+
+        Cola<Cliente3> fila = new Cola<>();
+        Cola<Cliente3> c1 = new Cola<>();
+        Cola<Cliente3> c2 = new Cola<>();
+        Cola<Cliente3> c3 = new Cola<>();
+        Cola<Cliente3> c4 = new Cola<>();
+
+        int tiempoSimulacion = 7 * 60; // 7 horas
+        int totalAtendidos = 0;
+        int maxFila = 0;
+        int sumaTamaños = 0;
+        int minutosConCaja4 = 0;
+        int maxEspera = 0;
+
+        for (int minuto = 0; minuto < tiempoSimulacion; minuto++) {
+
+            // Llega un cliente por minuto
+            fila.encolar(new Cliente3(minuto, tiempoAleatorio()));
+
+            // Activar caja 4 si fila > 20
+            boolean caja4Activa = fila.tamaño() > 20;
+            if (caja4Activa) minutosConCaja4++;
+
+            // Pasar clientes a cajas disponibles
+            asignarCaja(c1, fila, minuto);
+            asignarCaja(c2, fila, minuto);
+            asignarCaja(c3, fila, minuto);
+            if (caja4Activa) asignarCaja(c4, fila, minuto);
+
+            // Procesar cajas
+            totalAtendidos += procesar(c1);
+            totalAtendidos += procesar(c2);
+            totalAtendidos += procesar(c3);
+            if (caja4Activa) totalAtendidos += procesar(c4);
+
+            // Estadísticas
+            sumaTamaños += fila.tamaño();
+            maxFila = Math.max(maxFila, fila.tamaño());
+
+            // Cálculo correcto de tiempo de espera
+            Cliente3 primero = fila.verFrente();
+            if (primero != null) {
+                int espera = minuto - primero.tiempoLlegada;
+                maxEspera = Math.max(maxEspera, espera);
+            }
+        }
+
+        /**
+        * Se muestran los resultados  
+        */
+        System.out.println("===== RESULTADOS =====");
+        System.out.println("Clientes atendidos: " + totalAtendidos);
+        System.out.println("Tamaño máximo de la fila: " + maxFila);
+        System.out.println("Tamaño medio: " + (sumaTamaños / (double) tiempoSimulacion));
+        System.out.println("Tiempo máximo de espera: " + maxEspera + " minutos");
+        System.out.println("Tiempo con caja 4 abierta: " + minutosConCaja4 + " minutos");
+    }
+
+    static int tiempoAleatorio() {
+        return (int)(Math.random() * 6) + 3; // atención de 3–8 minutos
+    }
+
+    /**
+     * Si la caja está vacía y hay clientes en la fila, mueve al primero de la fila a la caja  
+     */
+    static void asignarCaja(Cola<Cliente3> caja, Cola<Cliente3> fila, int minuto) {
+        if (caja.esVacia() && !fila.esVacia()) {
+            Cliente3 c = fila.desencolar();
+            c.tiempoLlegada = minuto - c.tiempoLlegada; // tiempo total en espera
+            caja.encolar(c);
+        }
+    }
+
+    static int procesar(Cola<Cliente3> caja) {
+        if (caja.esVacia()) return 0;
+
+        Cliente3 c = caja.desencolar();
+        c.tiempoServicio--;
+
+        if (c.tiempoServicio > 0) {
+            caja.encolar(c); // sigue siendo atendido
+        } else {
+            return 1; // cliente atendido por completo
+        }
+        return 0;
+    }
+}
+
+```
+
